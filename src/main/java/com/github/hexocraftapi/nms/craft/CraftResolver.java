@@ -16,11 +16,14 @@ package com.github.hexocraftapi.nms.craft;
  * limitations under the License.
  */
 
+import com.github.hexocraftapi.reflection.resolver.MethodResolver;
+import com.github.hexocraftapi.reflection.resolver.ResolverQuery;
 import com.github.hexocraftapi.reflection.resolver.minecraft.NMSClassResolver;
 import com.github.hexocraftapi.reflection.resolver.minecraft.OBCClassResolver;
 import com.github.hexocraftapi.reflection.util.AccessUtil;
 import org.bukkit.Chunk;
 import org.bukkit.World;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
@@ -30,13 +33,15 @@ import java.lang.reflect.Method;
  */
 public class CraftResolver
 {
-	private static OBCClassResolver obcClassResolver = new OBCClassResolver();
-	private static NMSClassResolver nmsClassResolver = new NMSClassResolver();
+	private static final OBCClassResolver obcClassResolver = new OBCClassResolver();
+	private static final NMSClassResolver nmsClassResolver = new NMSClassResolver();
 
-	private static Class<?> CraftPlayer = obcClassResolver.resolveSilent("entity.CraftPlayer");
-	private static Class<?> CraftWorld = obcClassResolver.resolveSilent("CraftWorld");
-	private static Class<?> CraftChunk = obcClassResolver.resolveSilent("CraftChunk");
+	private static final Class<?> CraftChest  = obcClassResolver.resolveSilent("block.CraftChest");
+	private static final Class<?> CraftChunk  = obcClassResolver.resolveSilent("CraftChunk");
+	private static final Class<?> CraftPlayer = obcClassResolver.resolveSilent("entity.CraftPlayer");
+	private static final Class<?> CraftWorld  = obcClassResolver.resolveSilent("CraftWorld");
 
+	private static final MethodResolver obcChestMethodResolver = new MethodResolver(CraftChest);
 
 	// EntityPlayer NmsPlayer = ((CraftPlayer) player).getHandle()
 	public static Object getHandle(Player player)
@@ -63,11 +68,27 @@ public class CraftResolver
 	// Chunk nmsChunk = ((CraftChunk) chunk).getHandle()
 	public static Object getHandle(Chunk chunk)
 	{
-		try {
+		try
+		{
 			Method method = AccessUtil.setAccessible(CraftChunk.getDeclaredMethod("getHandle"));
 			return method.invoke(chunk);
 		}
-		catch(Exception ignored) {}
+		catch(Exception ignored)
+		{
+		}
+		return null;
+	}
+
+	// TileEntityChest nmsChest = ((CraftChest) chest).getTileEntity()
+	public static Object getTileEntity(Chest chest)
+	{
+		try
+		{
+			return obcChestMethodResolver.resolve(new ResolverQuery("getTileEntity")).invoke(chest);
+		}
+		catch(Exception ignored)
+		{
+		}
 		return null;
 	}
 }
