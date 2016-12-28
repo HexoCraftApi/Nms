@@ -72,8 +72,8 @@ public class nmsChest extends Nms
 		try
 		{
 			Reflection.nmsTileEntityChestMethodResolver
-			.resolve(new ResolverQuery("update"))
-			.invoke(nms);
+				.resolve(new ResolverQuery("update"))
+				.invoke(nms);
 		}
 		catch(Exception e) {
 			e.printStackTrace();

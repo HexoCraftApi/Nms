@@ -18,6 +18,7 @@ package com.github.hexocraftapi.nms.packet;
 
 import com.github.hexocraftapi.nms.craft.CraftResolver;
 import com.github.hexocraftapi.nms.utils.NmsPlayerUtil;
+import com.github.hexocraftapi.reflection.minecraft.Minecraft;
 import com.github.hexocraftapi.reflection.resolver.ConstructorResolver;
 import com.github.hexocraftapi.reflection.resolver.minecraft.NMSClassResolver;
 import org.bukkit.Chunk;
@@ -42,17 +43,35 @@ public class NmsPacketPlayOutMapChunk
 	{
 		try
 		{
-			Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
-									.resolve(new Class[] {nmsChunk.getClass(), int.class})
-									.newInstance(new Object[] { nmsChunk, 65280 });
+			if(Minecraft.VERSION.olderThan(Minecraft.Version.v1_9_R2))
+			{
+				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
+										.resolve(new Class[] {nmsChunk.getClass(), boolean.class, int.class})
+										.newInstance(new Object[] { nmsChunk, false, 65280 });
 
-			NmsPlayerUtil.sendPacket(player, nmsPacket1);
+				NmsPlayerUtil.sendPacket(player, nmsPacket1);
 
-			Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
-									.resolve(new Class[] {nmsChunk.getClass(), int.class})
-									.newInstance(new Object[] { nmsChunk, 255 });
+				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
+										.resolve(new Class[] {nmsChunk.getClass(), boolean.class, int.class})
+										.newInstance(new Object[] { nmsChunk, false, 255 });
 
-			NmsPlayerUtil.sendPacket(player, nmsPacket2);
+				NmsPlayerUtil.sendPacket(player, nmsPacket2);
+
+			}
+			else
+			{
+				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
+										.resolve(new Class[] {nmsChunk.getClass(), int.class})
+										.newInstance(new Object[] { nmsChunk, 65280 });
+
+				NmsPlayerUtil.sendPacket(player, nmsPacket1);
+
+				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
+										.resolve(new Class[] {nmsChunk.getClass(), int.class})
+										.newInstance(new Object[] { nmsChunk, 255 });
+
+				NmsPlayerUtil.sendPacket(player, nmsPacket2);
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();

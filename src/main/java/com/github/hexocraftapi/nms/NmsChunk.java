@@ -85,8 +85,9 @@ public class NmsChunk extends Nms
 	public void setModified(boolean modified)
 	{
 		try {
-			Field isModified = AccessUtil.setAccessible(nms.getClass().getDeclaredField("s"));
-			isModified.setBoolean(nms, modified);
+			Reflection.nmsChunkMethodResolver
+				.resolve(new ResolverQuery("f", boolean.class))
+				.invoke(nms, modified);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
