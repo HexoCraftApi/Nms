@@ -58,4 +58,9 @@ public class NmsChunkUtil
 		for(Player player : players)
 			new NmsChunk(chunk).sendUpdate(player);
 	}
+
+	public static void save(Chunk chunk)
+	{
+		new NmsChunk(chunk).save();
+	}
 }

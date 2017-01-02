@@ -19,6 +19,7 @@ package com.github.hexocraftapi.nms;
 import com.github.hexocraftapi.nms.craft.CraftResolver;
 import com.github.hexocraftapi.nms.craft.Nms;
 import com.github.hexocraftapi.nms.packet.NmsPacketPlayOutMapChunk;
+import com.github.hexocraftapi.nms.utils.NmsWorldUtil;
 import com.github.hexocraftapi.reflection.resolver.MethodResolver;
 import com.github.hexocraftapi.reflection.resolver.ResolverQuery;
 import com.github.hexocraftapi.reflection.resolver.minecraft.NMSClassResolver;
@@ -112,5 +113,11 @@ public class NmsChunk extends Nms
 	{
 		setModified(false);
 		NmsPacketPlayOutMapChunk.send(player, nms);
+	}
+
+	// Save the chunk
+	public void save()
+	{
+		NmsWorldUtil.saveChunk(this.chunk.getWorld(), this.chunk);
 	}
 }

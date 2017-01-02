@@ -17,7 +17,9 @@ package com.github.hexocraftapi.nms.utils;
  */
 
 import com.github.hexocraftapi.nms.NmsWorld;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 /**
  * @author <b>Hexosse</b> (<a href="https://github.com/hexosse">on GitHub</a>))
@@ -48,5 +50,10 @@ public class NmsWorldUtil
 	public static void relight(Location location)
 	{
 		new NmsWorld(location.getWorld()).relight(location.getX(), location.getY(), location.getZ());
+	}
+
+	public static void saveChunk(World world, Chunk chunk)
+	{
+		new NmsWorld(world).saveChunk(chunk);
 	}
 }

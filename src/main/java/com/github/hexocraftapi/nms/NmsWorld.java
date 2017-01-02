@@ -22,6 +22,7 @@ import com.github.hexocraftapi.reflection.resolver.FieldResolver;
 import com.github.hexocraftapi.reflection.resolver.MethodResolver;
 import com.github.hexocraftapi.reflection.resolver.ResolverQuery;
 import com.github.hexocraftapi.reflection.resolver.minecraft.NMSClassResolver;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 
 
@@ -33,10 +34,16 @@ public class NmsWorld extends Nms
 	static class Reflection {
 		private static final Class<?>       nmsWorld               = new NMSClassResolver().resolveSilent("World");
 		private static final MethodResolver nmsWorldMethodResolver = new MethodResolver(nmsWorld);
-		private static final FieldResolver  nmsWorldFieldResolver  = new FieldResolver(nmsWorld);
 
-		private static final Class<?>       nmsEnumSkyBlock        = new NMSClassResolver().resolveSilent("EnumSkyBlock");
+		private static final Class<?>       nmsWorldServer         = new NMSClassResolver().resolveSilent("WorldServer");
+		private static final MethodResolver nmsWorldServerMethodResolver = new MethodResolver(nmsWorldServer);
+
+		private static final Class<?>       nmsChunkProviderServer = new NMSClassResolver().resolveSilent("ChunkProviderServer");
+		private static final MethodResolver nmsChunkProviderServerMethodResolver = new MethodResolver(nmsChunkProviderServer);
+
 		private static final Class<?>       nmsBlockPosition       = new NMSClassResolver().resolveSilent("BlockPosition");
+		private static final Class<?>       nmsChunk               = new NMSClassResolver().resolveSilent("Chunk");
+		private static final Class<?>       nmsEnumSkyBlock        = new NMSClassResolver().resolveSilent("EnumSkyBlock");
 	}
 
 
@@ -103,6 +110,22 @@ public class NmsWorld extends Nms
 			Reflection.nmsWorldMethodResolver
 				.resolve( new ResolverQuery("w", Reflection.nmsBlockPosition))
 				.invoke(nms, new NmsBlockPosition(x, y, z).nms());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void saveChunk(Chunk chunk)
+	{
+		try {
+			Object chunkProviderServer = Reflection.nmsWorldServerMethodResolver
+				.resolve( new ResolverQuery("getChunkProviderServer"))
+				.invoke(nms);
+
+			Reflection.nmsChunkProviderServerMethodResolver
+				.resolve( new ResolverQuery("saveChunk", Reflection.nmsChunk))
+				.invoke(chunkProviderServer, new NmsChunk(chunk).nms());
 		}
 		catch(Exception e) {
 			e.printStackTrace();
