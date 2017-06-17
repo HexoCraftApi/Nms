@@ -16,7 +16,7 @@
 
 package com.github.hexocraftapi.nms.utils;
 
-import com.github.hexocraftapi.nms.nmsChest;
+import com.github.hexocraftapi.nms.NmsChest;
 import org.bukkit.block.Chest;
 
 /**
@@ -26,11 +26,11 @@ public class NmsChestUtil
 {
 	public static String getName(Chest chest)
 	{
-		return new nmsChest(chest).getName();
+		return new NmsChest(chest).getName();
 	}
 
 	public static void setName(Chest chest, String name)
 	{
-		new nmsChest(chest).setName(name);
+		new NmsChest(chest).setName(name);
 	}
 }

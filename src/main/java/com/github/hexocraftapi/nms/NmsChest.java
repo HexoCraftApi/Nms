@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 /**
  * @author <b>Hexosse</b> (<a href="https://github.com/hexosse">on GitHub</a>))
  */
-public class nmsChest extends Nms
+public class NmsChest extends Nms
 {
 	static class Reflection {
 		private static final Class<?>       nmsTileEntityChest               = new NMSClassResolver().resolveSilent("TileEntityChest");
@@ -39,7 +39,7 @@ public class nmsChest extends Nms
 	private Chest chest;
 
 
-	public nmsChest(Chest chest)
+	public NmsChest(Chest chest)
 	{
 		this.chest = chest;
 		this.nms = CraftResolver.getTileEntity(chest);
