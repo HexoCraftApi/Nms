@@ -31,38 +31,38 @@ public class NmsEnumSkyBlock extends Nms
 		private static final FieldResolver nmsEnumSkyBlockFieldResolver = new FieldResolver(nmsEnumSkyBlock);
 	}
 
-	// BLOCK : 0
-	// SKY : 15
+
+	static {
+		try
+		{
+			if(Reflection.nmsEnumSkyBlock.isEnum())
+			{
+				for(Object objEnum: Reflection.nmsEnumSkyBlock.getEnumConstants())
+				{
+					Object objEnumValue = Reflection.nmsEnumSkyBlockFieldResolver.resolve("c").get(objEnum) ;
+
+					if((int)objEnumValue == 0)
+						BLOCK = objEnum;
+					else if((int)objEnumValue == 15)
+						SKY = objEnum;
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 	private int enumskyblock;
-	private Object BLOCK;
-	private Object SKY;
+	private static Object BLOCK;	// BLOCK : 0
+	private static Object SKY;		// SKY : 15
 
 
 	public NmsEnumSkyBlock(int enumSkyBlockValue)
 	{
 		this.enumskyblock = enumSkyBlockValue;
-
-		if(BLOCK == null)
-		{
-			try
-			{
-				if(Reflection.nmsEnumSkyBlock.isEnum())
-				{
-					for(Object objEnum: Reflection.nmsEnumSkyBlock.getEnumConstants())
-					{
-						Object objEnumValue = Reflection.nmsEnumSkyBlockFieldResolver.resolve("c").get(objEnum) ;
-
-						if((int)objEnumValue == 0)
-							BLOCK = objEnum;
-						else if((int)objEnumValue == 15)
-							SKY = objEnum;
-					}
-				}
-			}
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
 
 		if(enumSkyBlockValue == 0)
 			nms = BLOCK;
