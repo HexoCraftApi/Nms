@@ -60,27 +60,32 @@ public class NmsPacketPlayOutChat
 
 	public static void send(Player player, byte chatMessageType, String messages)
 	{
-		send(player, new NmsChatMessageType(chatMessageType), messages);
+		if(Minecraft.VERSION.olderThan(Minecraft.Version.v1_12_R1))
+		{
+			try
+			{
+				Object packet = Reflection.PacketChatConstructorResolver
+					.resolve(new Class[] {Reflection.IChatBaseComponent, byte.class})
+					.newInstance(new Object[] { Reflection.getSerializedMessage(messages), chatMessageType });
+
+				NmsPlayerUtil.sendPacket(player, packet);
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			send(player, new NmsChatMessageType(chatMessageType), messages);
 	}
 
+	// ChatMessageType class appeared in 1.12 (Not before)
 	public static void send(Player player, NmsChatMessageType chatMessageType, String messages)
 	{
 		try
 		{
-			Object packet = null;
-
-			if(Minecraft.VERSION.olderThan(Minecraft.Version.v1_12_R1))
-			{
-				packet = Reflection.PacketChatConstructorResolver
-					.resolve(new Class[] {Reflection.IChatBaseComponent, byte.class})
-					.newInstance(new Object[] { Reflection.getSerializedMessage(messages), (byte)chatMessageType.nms() });
-			}
-			else
-			{
-				packet = Reflection.PacketChatConstructorResolver
+			Object packet = Reflection.PacketChatConstructorResolver
 					.resolve(new Class[] {Reflection.IChatBaseComponent, Reflection.ChatMessageType})
 					.newInstance(new Object[] { Reflection.getSerializedMessage(messages), chatMessageType.nms() });
-			}
 
 			NmsPlayerUtil.sendPacket(player, packet);
 		}
