@@ -16,6 +16,7 @@ package com.github.hexocraftapi.nms.packet;
  * limitations under the License.
  */
 
+import com.github.hexocraftapi.nms.NmsChunk;
 import com.github.hexocraftapi.nms.craft.CraftResolver;
 import com.github.hexocraftapi.nms.utils.NmsPlayerUtil;
 import com.github.hexocraftapi.reflection.minecraft.Minecraft;
@@ -36,24 +37,24 @@ public class NmsPacketPlayOutMapChunk
 
 	public static void send(Player player, Chunk chunk)
 	{
-		send(player, CraftResolver.getHandle(chunk));
+		send(player, new NmsChunk(chunk));
 	}
 
-	public static void send(Player player, Object nmsChunk)
+	public static void send(Player player, NmsChunk nmsChunk)
 	{
 		try
 		{
 			if(Minecraft.VERSION.olderThan(Minecraft.Version.v1_9_R2))
 			{
 				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.getClass(), boolean.class, int.class})
-										.newInstance(new Object[] { nmsChunk, false, 65280 });
+										.resolve(new Class[] {nmsChunk.nms().getClass(), boolean.class, int.class})
+										.newInstance(new Object[] { nmsChunk.nms(), false, 65280 });
 
 				NmsPlayerUtil.sendPacket(player, nmsPacket1);
 
 				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.getClass(), boolean.class, int.class})
-										.newInstance(new Object[] { nmsChunk, false, 255 });
+										.resolve(new Class[] {nmsChunk.nms().getClass(), boolean.class, int.class})
+										.newInstance(new Object[] { nmsChunk.nms(), false, 255 });
 
 				NmsPlayerUtil.sendPacket(player, nmsPacket2);
 
@@ -61,14 +62,14 @@ public class NmsPacketPlayOutMapChunk
 			else
 			{
 				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.getClass(), int.class})
-										.newInstance(new Object[] { nmsChunk, 65280 });
+										.resolve(new Class[] {nmsChunk.nms().getClass(), int.class})
+										.newInstance(new Object[] { nmsChunk.nms(), 65280 });
 
 				NmsPlayerUtil.sendPacket(player, nmsPacket1);
 
 				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.getClass(), int.class})
-										.newInstance(new Object[] { nmsChunk, 255 });
+										.resolve(new Class[] {nmsChunk.nms().getClass(), int.class})
+										.newInstance(new Object[] { nmsChunk.nms(), 255 });
 
 				NmsPlayerUtil.sendPacket(player, nmsPacket2);
 			}

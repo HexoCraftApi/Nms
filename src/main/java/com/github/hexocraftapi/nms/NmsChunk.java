@@ -112,7 +112,7 @@ public class NmsChunk extends Nms
 	public void sendUpdate(Player player)
 	{
 		setModified(false);
-		NmsPacketPlayOutMapChunk.send(player, nms);
+		NmsPacketPlayOutMapChunk.send(player, this);
 	}
 
 	// Save the chunk
