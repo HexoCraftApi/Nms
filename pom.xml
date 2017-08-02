@@ -118,11 +118,18 @@
             <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency> -->
-        <!--hexosse Reflection-->
+        <!-- Reflection -->
         <dependency>
             <groupId>com.github.hexocraftapi</groupId>
             <artifactId>reflection</artifactId>
             <version>[1.10.5,)</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Util -->
+        <dependency>
+            <groupId>com.github.hexocraftapi</groupId>
+            <artifactId>util</artifactId>
+            <version>1.1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

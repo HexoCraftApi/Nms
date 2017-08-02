@@ -24,6 +24,7 @@ import com.github.hexocraftapi.reflection.resolver.MethodResolver;
 import com.github.hexocraftapi.reflection.resolver.ResolverQuery;
 import com.github.hexocraftapi.reflection.resolver.minecraft.NMSClassResolver;
 import com.github.hexocraftapi.reflection.util.AccessUtil;
+import com.github.hexocraftapi.util.ChunkUtil;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -125,6 +126,12 @@ public class NmsChunk extends Nms
 	public void sendUpdate(Player... players)
 	{
 		NmsPacketPlayOutMapChunk.send(this, players);
+	}
+
+	// Send close players Chunk update
+	public void sendClosePlayersUpdate(int nbChunk)
+	{
+		sendUpdate(ChunkUtil.getClosePlayers(chunk, nbChunk));
 	}
 
 	// Save the chunk
