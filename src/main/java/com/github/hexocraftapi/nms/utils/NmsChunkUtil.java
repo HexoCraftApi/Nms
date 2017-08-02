@@ -43,9 +43,11 @@ public class NmsChunkUtil
 		return new NmsChunk(location.getChunk()).isModified();
 	}
 
-	public static void initLighting(Chunk chunk)
+	public static NmsChunk initLighting(Chunk chunk)
 	{
-		new NmsChunk(chunk).initLighting();
+		NmsChunk nmsChunk = new NmsChunk(chunk);
+		nmsChunk.initLighting();
+		return nmsChunk;
 	}
 
 	public static void sendUpdate(Chunk chunk, Player player)
@@ -55,8 +57,12 @@ public class NmsChunkUtil
 
 	public static void sendUpdate(Chunk chunk, Collection<? extends Player> players)
 	{
-		for(Player player : players)
-			new NmsChunk(chunk).sendUpdate(player);
+		new NmsChunk(chunk).sendUpdate(players.toArray(new Player[players.size()]));
+	}
+
+	public static void sendUpdate(Chunk chunk, Player... players)
+	{
+		new NmsChunk(chunk).sendUpdate(players);
 	}
 
 	public static void save(Chunk chunk)

@@ -29,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 /**
  * @author <b>Hexosse</b> (<a href="https://github.com/hexosse">on GitHub</a>))
@@ -111,8 +112,19 @@ public class NmsChunk extends Nms
 	// Send player Chunk update
 	public void sendUpdate(Player player)
 	{
-		setModified(false);
-		NmsPacketPlayOutMapChunk.send(player, this);
+		NmsPacketPlayOutMapChunk.send(this, player);
+	}
+
+	// Send players Chunk update
+	public void sendUpdate(Collection<? extends Player> players)
+	{
+		sendUpdate(players.toArray(new Player[players.size()]));
+	}
+
+	// Send players Chunk update
+	public void sendUpdate(Player... players)
+	{
+		NmsPacketPlayOutMapChunk.send(this, players);
 	}
 
 	// Save the chunk

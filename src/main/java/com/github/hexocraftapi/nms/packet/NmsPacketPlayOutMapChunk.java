@@ -17,7 +17,6 @@ package com.github.hexocraftapi.nms.packet;
  */
 
 import com.github.hexocraftapi.nms.NmsChunk;
-import com.github.hexocraftapi.nms.craft.CraftResolver;
 import com.github.hexocraftapi.nms.utils.NmsPlayerUtil;
 import com.github.hexocraftapi.reflection.minecraft.Minecraft;
 import com.github.hexocraftapi.reflection.resolver.ConstructorResolver;
@@ -35,43 +34,42 @@ public class NmsPacketPlayOutMapChunk
 		private static final ConstructorResolver nmsPacketChunkConstructorResolver = new ConstructorResolver(nmsPacketPlayOutMapChunk);
 	}
 
-	public static void send(Player player, Chunk chunk)
+	public static void send(Chunk chunk, Player player)
 	{
-		send(player, new NmsChunk(chunk));
+		send(new NmsChunk(chunk), player);
 	}
 
-	public static void send(Player player, NmsChunk nmsChunk)
+	public static void send(NmsChunk nmsChunk, Player player)
 	{
+		Player[] players = new Player[] { player };
+		send(nmsChunk, players);
+	}
+
+	public static void send(NmsChunk nmsChunk, Player... players)
+	{
+		//int bitmask = 65535;
+		//int bitmask = 65280;
+		int bitmask = 255;
+
 		try
 		{
 			if(Minecraft.VERSION.olderThan(Minecraft.Version.v1_9_R2))
 			{
-				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
+				Object nmsPacket = Reflection.nmsPacketChunkConstructorResolver
 										.resolve(new Class[] {nmsChunk.nms().getClass(), boolean.class, int.class})
-										.newInstance(new Object[] { nmsChunk.nms(), false, 65280 });
+										.newInstance(new Object[] { nmsChunk.nms(), false, bitmask });
 
-				NmsPlayerUtil.sendPacket(player, nmsPacket1);
-
-				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.nms().getClass(), boolean.class, int.class})
-										.newInstance(new Object[] { nmsChunk.nms(), false, 255 });
-
-				NmsPlayerUtil.sendPacket(player, nmsPacket2);
-
+				for(Player player : players)
+					NmsPlayerUtil.sendPacket(player, nmsPacket);
 			}
 			else
 			{
-				Object nmsPacket1 = Reflection.nmsPacketChunkConstructorResolver
+				Object nmsPacket = Reflection.nmsPacketChunkConstructorResolver
 										.resolve(new Class[] {nmsChunk.nms().getClass(), int.class})
-										.newInstance(new Object[] { nmsChunk.nms(), 65280 });
+										.newInstance(new Object[] { nmsChunk.nms(), bitmask });
 
-				NmsPlayerUtil.sendPacket(player, nmsPacket1);
-
-				Object nmsPacket2 = Reflection.nmsPacketChunkConstructorResolver
-										.resolve(new Class[] {nmsChunk.nms().getClass(), int.class})
-										.newInstance(new Object[] { nmsChunk.nms(), 255 });
-
-				NmsPlayerUtil.sendPacket(player, nmsPacket2);
+				for(Player player : players)
+					NmsPlayerUtil.sendPacket(player, nmsPacket);
 			}
 		}
 		catch(Exception e) {
