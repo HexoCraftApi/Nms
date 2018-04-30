@@ -47,9 +47,9 @@ public class NmsPacketPlayOutMapChunk
 
 	public static void send(NmsChunk nmsChunk, Player... players)
 	{
-		//int bitmask = 65535;
+		int bitmask = 65535;
 		//int bitmask = 65280;
-		int bitmask = 255;
+		//int bitmask = 255;
 
 		try
 		{
