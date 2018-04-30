@@ -80,40 +80,46 @@ public class NmsWorld extends Nms
 		}
 	}
 
-	public void relightBlock(double x, double y, double z)
+	public boolean relightBlock(double x, double y, double z)
 	{
 		try {
-			Reflection.nmsWorldMethodResolver
-				.resolve( new ResolverQuery("c", Reflection.nmsEnumSkyBlock, Reflection.nmsBlockPosition))
-				.invoke(nms, new NmsEnumSkyBlock(0).nms(), new NmsBlockPosition(x, y, z).nms());
+			Object o = Reflection.nmsWorldMethodResolver
+						.resolve( new ResolverQuery("c", Reflection.nmsEnumSkyBlock, Reflection.nmsBlockPosition))
+						.invoke(nms, new NmsEnumSkyBlock(0).nms(), new NmsBlockPosition(x, y, z).nms());
+			return (boolean)o;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
-	public void relightSky(double x, double y, double z)
+	public boolean relightSky(double x, double y, double z)
 	{
 		try {
-			Reflection.nmsWorldMethodResolver
-				.resolve( new ResolverQuery("c", Reflection.nmsEnumSkyBlock, Reflection.nmsBlockPosition))
-				.invoke(nms, new NmsEnumSkyBlock(15).nms(), new NmsBlockPosition(x, y, z).nms());
+			Object o = Reflection.nmsWorldMethodResolver
+							.resolve( new ResolverQuery("c", Reflection.nmsEnumSkyBlock, Reflection.nmsBlockPosition))
+							.invoke(nms, new NmsEnumSkyBlock(15).nms(), new NmsBlockPosition(x, y, z).nms());
+			return (boolean)o;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
-	public void relight(double x, double y, double z)
+	public boolean relight(double x, double y, double z)
 	{
 		try {
-			Reflection.nmsWorldMethodResolver
-				.resolve( new ResolverQuery("w", Reflection.nmsBlockPosition))
-				.invoke(nms, new NmsBlockPosition(x, y, z).nms());
+			Object o = Reflection.nmsWorldMethodResolver
+						.resolve( new ResolverQuery("w", Reflection.nmsBlockPosition))
+						.invoke(nms, new NmsBlockPosition(x, y, z).nms());
+			return (boolean)o;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	public void saveChunk(Chunk chunk)

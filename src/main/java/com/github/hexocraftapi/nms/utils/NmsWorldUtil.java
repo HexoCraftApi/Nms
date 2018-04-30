@@ -37,19 +37,19 @@ public class NmsWorldUtil
 		new NmsWorld(location.getWorld()).setSkyLight(location.getX(), location.getY(), location.getZ(), light);
 	}
 
-	public static void relightBlock(Location location)
+	public static boolean relightBlock(Location location)
 	{
-		new NmsWorld(location.getWorld()).relightBlock(location.getX(), location.getY(), location.getZ());
+		return new NmsWorld(location.getWorld()).relightBlock(location.getX(), location.getY(), location.getZ());
 	}
 
-	public static void relightSky(Location location)
+	public static boolean relightSky(Location location)
 	{
-		new NmsWorld(location.getWorld()).relightSky(location.getX(), location.getY(), location.getZ());
+		return new NmsWorld(location.getWorld()).relightSky(location.getX(), location.getY(), location.getZ());
 	}
 
-	public static void relight(Location location)
+	public static boolean relight(Location location)
 	{
-		new NmsWorld(location.getWorld()).relight(location.getX(), location.getY(), location.getZ());
+		return new NmsWorld(location.getWorld()).relight(location.getX(), location.getY(), location.getZ());
 	}
 
 	public static void saveChunk(World world, Chunk chunk)
